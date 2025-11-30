@@ -6,17 +6,14 @@ interface CountContextProps {
   decrement: () => void
 }
 
-// 1. Create the Context
 export const CountContext = createContext<CountContextProps | undefined>(undefined)
 
-// 2. Create the Provider Component
 export const CountProvider = ({ children }: { children: ReactNode}) => {
 
   const [count, setCount] = useState<number>(0)
 
-  // Use functional updates to ensure consistency
-  const increment = () => setCount((prevCount) => prevCount + 1)
-  const decrement = () => setCount((prevCount) => prevCount > 0 ? prevCount - 1 : 0)
+  const increment = () => setCount((count ) =>count + 1)
+  const decrement = () => setCount((count) => count > 0 ? count - 1 : 0)
 
   return (
     <CountContext.Provider value={{ count, increment, decrement }}>
@@ -25,13 +22,13 @@ export const CountProvider = ({ children }: { children: ReactNode}) => {
   )
 }
 
-// 3. Create the Custom Hook for easy consumption
+
+
 export const useCount = () => {
   const context = useContext(CountContext)
 
   if (!context) {
-    // This throws an error if the hook is used outside the provider
-    throw new Error("useCount must be used within a CountProvider")
+    throw new Error("useCount must be within a Count Provider")
   }
 
   return context
